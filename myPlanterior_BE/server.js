@@ -8,6 +8,10 @@ const port = 3000;
 
 server.use(morgan('dev'));
 
+server.get('/', (req, res)=>{
+    res.send('hello');
+})
+
 
 server.listen(port, ()=>{
     console.log(port, '번 에서 서버 실행중');
