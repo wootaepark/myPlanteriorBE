@@ -8,6 +8,7 @@ class PlantDetail extends Sequelize.Model{
             contentNumber : {
                 type : Sequelize.INTEGER,
                 allowNull : false,
+                primaryKey : true,
             }, // 식물 고유 번호 1
 
             plntbneName : {
@@ -589,7 +590,7 @@ class PlantDetail extends Sequelize.Model{
     
     static associate(db){
        
-        //db.Missing.hasMany(db.Report,{foreignKey : 'missingId'});
+        db.PlantDetail.hasMany(db.PlantImage,{foreignKey : 'contentNumber', sourceKey : 'contentNumber'});
         
     }
 }
