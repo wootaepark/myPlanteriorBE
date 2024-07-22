@@ -8,6 +8,7 @@ recommandation.get('/', async (req, res, next) =>{
 
     try{
     const number = req.query.contentNumber;
+    
     const data = await Plant.findOne({
         where : {
             contentNumber : number,

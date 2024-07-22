@@ -11,6 +11,11 @@ const recommandRouter = require('./routes/api/recommendation');
 const server = express();
 const port = 3000;
 server.use(morgan('dev'));
+server.use(express.json());
+server.use(express.urlencoded({extended : false}));
+// server.use(express.static(path.join(__dirname,'public')));
+// server.use('/img',express.static(path.join(__dirname,'uploads')));
+
 
 sequelize.sync({force : false})
 .then(()=>{
