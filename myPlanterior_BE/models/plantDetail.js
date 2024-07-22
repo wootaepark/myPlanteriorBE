@@ -8,11 +8,12 @@ class PlantDetail extends Sequelize.Model{
             contentNumber : {
                 type : Sequelize.INTEGER,
                 allowNull : false,
+                primaryKey : true,
             }, // 식물 고유 번호 1
 
             plntbneName : {
                 type : Sequelize.TEXT,
-                allowNull : false,
+                allowNull : true,
 
             },// 식물학명 2
             plntzrName : {
@@ -563,7 +564,72 @@ class PlantDetail extends Sequelize.Model{
             dlthtsCodeName_4 : {
                 type : Sequelize.TEXT,
                 allowNull : true,
-            }, // 병충해 코드명 _4 141
+            }, // 병충해 코드명 _4 139
+
+
+
+            hmdImprove : {
+                type : Sequelize.STRING,
+                allowNull : true,
+            }, // 습도 개선 정도
+
+            sickHouseSyndrome : {
+                type : Sequelize.STRING,
+                allowNull : true,
+            }, // 새집증후군 효과 정도
+
+            fromaldehydeRemoval : {
+                type : Sequelize.INTEGER,
+                allowNull : true,
+            }, // 프롬알데히드 제거량 (점수)
+            tolueneRemoval : {
+                type : Sequelize.INTEGER,
+                allowNull : true,
+            }, // 톨루엔 제거량 (점수)
+            negativeIonGen : {
+                type : Sequelize.INTEGER,
+                allowNull : true,
+            }, // 음이온 발생량 (점수)
+
+
+            relHumidityIncrease : {
+                type : Sequelize.INTEGER,
+                allowNull : true,
+            },
+            // 상대습도 증가량 (점수)
+
+            co2Reduction : {
+                type : Sequelize.INTEGER,
+                allowNull : true,
+            },
+            // 이산화탄소 감소량 (점수)
+
+            xyleneRemoval : {
+                type : Sequelize.INTEGER,
+                allowNull : true,
+            },
+            // 자일렌 제거량 (점수)
+
+            coReduction : {
+                type : Sequelize.INTEGER,
+                allowNull : true,
+            },
+            // 일산화탄소 제거량 (점수)
+
+            limoninIngredient: {
+                type : Sequelize.INTEGER,
+                allowNull : true,
+            },
+            // 리모닌성분함량 (점수)
+
+            additionalPlace : {
+                type : Sequelize.STRING,
+                allowNull : true,
+            }
+            // 추가배치 장소 
+
+
+
 
 
 
@@ -589,7 +655,7 @@ class PlantDetail extends Sequelize.Model{
     
     static associate(db){
        
-        //db.Missing.hasMany(db.Report,{foreignKey : 'missingId'});
+        db.PlantDetail.hasMany(db.PlantImage,{foreignKey : 'contentNumber', sourceKey : 'contentNumber'});
         
     }
 }

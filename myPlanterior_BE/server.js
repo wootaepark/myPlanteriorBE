@@ -1,10 +1,20 @@
 const express = require('express');
 const morgan = require('morgan');
+require('dotenv').config();
 const {sequelize} = require('./models');
+
+
+// 라우터
+const recommandRouter = require('./routes/api/recommendation');
 
 
 const server = express();
 const port = 3000;
+server.use(morgan('dev'));
+server.use(express.json());
+server.use(express.urlencoded({extended : false}));
+// server.use(express.static(path.join(__dirname,'public')));
+// server.use('/img',express.static(path.join(__dirname,'uploads')));
 
 
 sequelize.sync({force : false})
@@ -17,11 +27,31 @@ sequelize.sync({force : false})
 
 
 
-server.use(morgan('dev'));
 
-server.get('/', (req, res)=>{
-    res.send('hello');
+server.use('/api/recommand' , recommandRouter);
+
+
+
+// 404 NOT FOUND 에러 처리
+
+server.use((req, res, next)=>{
+    const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`); // 404 not found 에러 처리 미들웨어
+    error.status = 404;
+    next(error);
 })
+
+// 500 Internal Server 에러 처리
+
+server.use((err,req,res,next)=>{
+    res.locals.message = err.message;
+    res.locals.error = process.env.NODE_ENV !== 'production' ? err : {}; // 환경에 따른 에러 표시 유무 조건문
+    res.status(err.status || 500);
+    res.render('error');
+})
+
+
+
+
 
 
 server.listen(port, ()=>{
