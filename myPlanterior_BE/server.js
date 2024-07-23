@@ -4,10 +4,11 @@ const session = require('express-session');
 require('dotenv').config();
 const {sequelize} = require('./models');
 const googleAuthRouter = require('./routes/googleAuth/login');
+const kakaoAuthRouter = require('./Controllers/kakaoLoginController')
 
 
 // 라우터
-const recommandRouter = require('./routes/api/recommendation');
+const recommendRouter = require('./routes/api/recommendation');
 
 const server = express();
 const port = 3000;
@@ -59,8 +60,9 @@ server.use('/auth/google',googleAuthRouter);
 
 
 
-server.use('/api/recommend' , recommendRouter); // 식물 추천 라우터
 
+server.use('/api/recommend' , recommendRouter); // 식물 추천 라우터
+server.use('/',kakaoAuthRouter);
 
 
 // 404 NOT FOUND 에러 처리
