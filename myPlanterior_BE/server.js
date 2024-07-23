@@ -7,8 +7,7 @@ const googleAuthRouter = require('./routes/googleAuth/login');
 
 
 // 라우터
-const recommendRouter = require('./routes/api/recommendation');
-
+const recommandRouter = require('./routes/api/recommendation');
 
 const server = express();
 const port = 3000;
