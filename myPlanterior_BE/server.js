@@ -1,5 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
+const session = require('express-session');
 require('dotenv').config();
 const {sequelize} = require('./models');
 const googleAuthRouter = require('./routes/googleAuth/login');
@@ -17,6 +18,12 @@ server.use(express.urlencoded({extended : false}));
 // server.use(express.static(path.join(__dirname,'public')));
 // server.use('/img',express.static(path.join(__dirname,'uploads')));
 
+server.use(session({
+    secret: "myplanterrior",
+    resave: true,
+    secure: false,
+    saveUninitialized: false,
+}))
 
 sequelize.sync({force : false})
 .then(()=>{
