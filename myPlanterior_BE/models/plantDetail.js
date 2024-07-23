@@ -625,8 +625,12 @@ class PlantDetail extends Sequelize.Model{
             additionalPlace : {
                 type : Sequelize.STRING,
                 allowNull : true,
-            }
+            },
             // 추가배치 장소 
+            selectedCount : {
+                type : Sequelize.INTEGER,
+                defaultValue : 0,
+            }, // 추천해준 횟수 카운트
 
 
 

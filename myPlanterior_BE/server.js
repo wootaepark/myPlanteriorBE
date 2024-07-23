@@ -6,7 +6,7 @@ const googleAuthRouter = require('./routes/googleAuth/login');
 
 
 // 라우터
-const recommandRouter = require('./routes/api/recommendation');
+const recommendRouter = require('./routes/api/recommendation');
 
 
 const server = express();
@@ -53,7 +53,7 @@ server.use('/auth/google',googleAuthRouter);
 
 
 
-server.use('/api/recommand' , recommandRouter); // 식물 추천 라우터
+server.use('/api/recommend' , recommendRouter); // 식물 추천 라우터
 
 
 
