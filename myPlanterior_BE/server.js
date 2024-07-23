@@ -2,6 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 require('dotenv').config();
 const {sequelize} = require('./models');
+const googleAuthRouter = require('./routes/googleAuth/login');
 
 
 // 라우터
@@ -27,8 +28,32 @@ sequelize.sync({force : false})
 
 
 
+server.get('/', (req, res)=>{
+    res.send(`
+        <h1>OAuth</h1>
+        <a href="/login">Log in</a>
+        `)
+});
 
-server.use('/api/recommand' , recommandRouter);
+
+
+server.get('/login', (req, res) =>{
+    let url = 'https://accounts.google.com/o/oauth2/v2/auth';
+    url += `?client_id=${process.env.GOOGLE_CLIENT_ID}`;
+    url += `&redirect_uri=http://localhost:3000/auth/google`;
+    url += '&response_type=code'
+  	// 구글에 등록된 유저 정보 email, profile을 가져오겠다 명시
+    url += '&scope=email profile'    
+  	// 완성된 url로 이동
+  	// 이 url이 위에서 본 구글 계정을 선택하는 화면임.
+	res.redirect(url);
+
+});
+server.use('/auth/google',googleAuthRouter);
+
+
+
+server.use('/api/recommand' , recommandRouter); // 식물 추천 라우터
 
 
 
