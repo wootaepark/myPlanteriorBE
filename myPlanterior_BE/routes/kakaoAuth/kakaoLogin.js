@@ -18,10 +18,11 @@ router.get("/oauth/kakao", (req, res) => {
 router.get("/oauth/kakao/callback", async(req, res) => {
     let token
     try {
+        console.log("token")
         token = await axios({
             method: "post",
             url: "https://kauth.kakao.com/oauth/token",
-            header: {
+            headers: {
                 "content-type": "application/x-www-form-urlencoded"
             },
             data:qs.stringify({
@@ -32,9 +33,24 @@ router.get("/oauth/kakao/callback", async(req, res) => {
                 code: req.query.code
             })
         })
-        console.log(token)
+        console.log(token.data)
     } catch (error) {
-        console.log(error)
+        // console.log(error)
+    }
+
+    let user
+    try {
+        console.log("user")
+        user = await axios({
+            method: "get",
+            url: "https://kapi.kakao.com/v2/user/me",
+            headers: {
+                "Authorization": `Bearer ${token.data.access_token}`,
+            },
+        })
+        console.log(user.data)
+    } catch (error) {
+        // console.log(error)
     }
 })
 
