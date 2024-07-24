@@ -54,12 +54,13 @@ router.get("/oauth/kakao/callback", async(req, res) => {
 
         console.log(userData)
 
-
+        // user DB 저장
 
 
         const result = await User.create({
             name: userData.profile.nickname,
             email: userData.email,
+            source: "kakao"
         });
 
         console.log(result)

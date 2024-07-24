@@ -10,6 +10,10 @@ class User extends Sequelize.Model{
             email: {
                 type: Sequelize.STRING,
                 allowNull: false,
+            },
+            source: {
+                type: Sequelize.STRING,
+                allowNull: false,
             }
         }, {
             sequelize,

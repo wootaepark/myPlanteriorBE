@@ -40,9 +40,13 @@ googleAuthRouter.get('/', async (req, res, next)=>{
         res.send('로그인 성공');
 
 
+
+        // user DB 저장
+
         const result = await User.create({
             name: resp2.data.name,
-            email: resp2.data.email
+            email: resp2.data.email,
+            source: "google"
         })
 
 
