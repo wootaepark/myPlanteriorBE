@@ -4,7 +4,8 @@ const session = require('express-session');
 require('dotenv').config();
 const {sequelize} = require('./models');
 const googleAuthRouter = require('./routes/googleAuth/login');
-const kakaoAuthRouter = require('./Controllers/kakaoLoginController')
+const kakaoAuthRouter = require('./routes/kakaoAuth/kakaoLogin')
+const naverStoreRouter = require("./routes/naverStoreAPI/naverStoreAPI")
 
 
 // 라우터
@@ -59,7 +60,7 @@ server.get('/login', (req, res) =>{
 server.use('/auth/google',googleAuthRouter);
 
 
-
+server.use("/", naverStoreRouter)
 
 server.use('/api/recommend' , recommendRouter); // 식물 추천 라우터
 server.use('/',kakaoAuthRouter);
