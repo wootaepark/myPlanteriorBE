@@ -2,6 +2,8 @@ const express = require('express');
 const axios = require('axios');
 require('dotenv').config;
 
+const User = require("../../models/user")
+
 const googleAuthRouter = express.Router();
 
 googleAuthRouter.get('/', async (req, res, next)=>{
@@ -36,6 +38,16 @@ googleAuthRouter.get('/', async (req, res, next)=>{
         });
         console.log(resp2.data);
         res.send('로그인 성공');
+
+
+        const result = await User.create({
+            name: resp2.data.name,
+            email: resp2.data.email
+        })
+
+
+
+        console.log(result)
     }
     catch(error){
         console.error('Error during get user info:', error.response ? error.response.data : error.message);

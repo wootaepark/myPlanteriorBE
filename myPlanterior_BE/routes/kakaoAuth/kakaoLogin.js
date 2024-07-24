@@ -3,6 +3,7 @@ const express = require("express")
 const router = express.Router()
 const axios = require("axios")
 const qs = require("qs")
+const User = require("../../models/user")
 
 const kakao_config = {
     client_id: process.env.KAKAO_REST_API,
@@ -48,7 +49,21 @@ router.get("/oauth/kakao/callback", async(req, res) => {
                 "Authorization": `Bearer ${token.data.access_token}`,
             },
         })
-        console.log(user.data)
+
+        const userData = user.data.kakao_account
+
+        console.log(userData)
+
+
+
+
+        const result = await User.create({
+            name: userData.profile.nickname,
+            email: userData.email,
+        });
+
+        console.log(result)
+
     } catch (error) {
         // console.log(error)
     }
