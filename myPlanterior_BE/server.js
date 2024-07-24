@@ -3,12 +3,11 @@ const morgan = require('morgan');
 const session = require('express-session');
 require('dotenv').config();
 const {sequelize} = require('./models');
-const googleAuthRouter = require('./routes/googleAuth/login');
-const kakaoAuthRouter = require('./routes/kakaoAuth/kakaoLogin')
-const naverStoreRouter = require("./routes/naverStoreAPI/naverStoreAPI")
-
 
 // 라우터
+const googleAuthRouter = require('./routes/googleAuth/login');
+const kakaoAuthRouter = require('./routes/kakaoAuth/kakaoLogin')
+const naverStoreRouter = require("./routes/naverStoreAPI/naverStoreAPI");
 const recommendRouter = require('./routes/api/recommendation');
 
 const server = express();
@@ -64,6 +63,10 @@ server.use("/", naverStoreRouter)
 
 server.use('/api/recommend' , recommendRouter); // 식물 추천 라우터
 server.use('/',kakaoAuthRouter);
+
+
+server.use('/send-data', recommendRouter); 
+
 
 
 // 404 NOT FOUND 에러 처리
