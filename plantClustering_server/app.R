@@ -38,9 +38,8 @@ function(height, scent, level, water_need, leaf_shape, purpose_avg, leaf_color_a
     distances_to_points <- apply(level_match_data, 1, function(point) euclidean_distance(scaled_new_point, point))
     closest_points_indices <- order(distances_to_points)[1:9]
     closest_points <- originData[numeric_data$level == new_point$level, ][closest_points_indices, ]
+    closest_points$scores <- 1 / (distances_to_points[closest_points_indices] + 1e-5)  # Add a small number to avoid division by zero
   }
   return(closest_points)
 }
 
-#r <- plumb("/app/app.R")
-#r$run(host = "0.0.0.0", port = 8000)

@@ -1,7 +1,9 @@
 const express = require('express');
 const morgan = require('morgan');
 const session = require('express-session');
+const passport = require('passport');
 require('dotenv').config();
+require('./passport/googleStrategy');
 const {sequelize} = require('./models');
 
 // 라우터
@@ -10,20 +12,29 @@ const kakaoAuthRouter = require('./routes/kakaoAuth/kakaoLogin')
 const naverStoreRouter = require("./routes/naverStoreAPI/naverStoreAPI");
 const recommendRouter = require('./routes/api/recommendation');
 
+
+
 const server = express();
 const port = 3000;
+
+
 server.use(morgan('dev'));
 server.use(express.json());
-server.use(express.urlencoded({extended : false}));
+server.use(express.urlencoded({extended : true}));
 // server.use(express.static(path.join(__dirname,'public')));
 // server.use('/img',express.static(path.join(__dirname,'uploads')));
 
+
 server.use(session({
     secret: "myplanterrior",
-    resave: true,
+    resave: false,
     secure: false,
     saveUninitialized: false,
-}))
+}));
+
+server.use(passport.initialize());
+server.use(passport.session());
+
 
 sequelize.sync({force : false})
 .then(()=>{
@@ -35,37 +46,11 @@ sequelize.sync({force : false})
 
 
 
-server.get('/', (req, res)=>{
-    res.send(`
-        <h1>OAuth</h1>
-        <a href="/login">Log in</a>
-        `)
-});
 
-
-
-server.get('/login', (req, res) =>{
-    let url = 'https://accounts.google.com/o/oauth2/v2/auth';
-    url += `?client_id=${process.env.GOOGLE_CLIENT_ID}`;
-    url += `&redirect_uri=http://localhost:3000/auth/google`;
-    url += '&response_type=code'
-  	// 구글에 등록된 유저 정보 email, profile을 가져오겠다 명시
-    url += '&scope=email profile'    
-  	// 완성된 url로 이동
-  	// 이 url이 위에서 본 구글 계정을 선택하는 화면임.
-	res.redirect(url);
-
-});
-server.use('/auth/google',googleAuthRouter);
-
-
-server.use("/", naverStoreRouter)
-
-server.use('/api/recommend' , recommendRouter); // 식물 추천 라우터
-server.use('/',kakaoAuthRouter);
-
-
-server.use('/send-data', recommendRouter); 
+//server.use("/", naverStoreRouter);
+//server.use('/',kakaoAuthRouter);
+server.use('/auth',googleAuthRouter);
+server.use('/send-data', recommendRouter); // 식물 추천 라우터
 
 
 
@@ -83,7 +68,10 @@ server.use((err,req,res,next)=>{
     res.locals.message = err.message;
     res.locals.error = process.env.NODE_ENV !== 'production' ? err : {}; // 환경에 따른 에러 표시 유무 조건문
     res.status(err.status || 500);
-    res.render('error');
+    res.send(`
+        <h1>Error ${err.status || 500}</h1>
+        <p>${res.locals.message}</p>
+    `);
 })
 
 
