@@ -4,7 +4,8 @@ const session = require('express-session');
 const passport = require('passport');
 require('dotenv').config();
 
-require('./passport/index')();
+require('./passport/googleStrategy')();
+require("./passport/kakaoStrategy")();
 
 const {sequelize} = require('./models');
 
@@ -30,7 +31,6 @@ server.use(express.urlencoded({extended : true}));
 server.use(session({
     secret: "myplanterrior",
     resave: false,
-    secure: false,
     saveUninitialized: false, // 세션이 새로 생성되면 저장하도록 설정
     cookie: { secure: false } // 개발 환경에서는 false로 설정 (production 환경에서는 true로 설정)
 }));
@@ -52,7 +52,7 @@ sequelize.sync({force : false})
 
 //server.use("/", naverStoreRouter);
 
-//server.use('/',kakaoAuthRouter);
+server.use('/',kakaoAuthRouter);
 
 server.get('/', (req, res, next) =>{
     res.send(
