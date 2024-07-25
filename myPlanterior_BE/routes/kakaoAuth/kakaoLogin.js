@@ -24,6 +24,7 @@ router.get("/oauth/kakao/callback", async(req, res, next) => {
         }
 
         console.log(user)
+        res.send(user)
     })(req, res, next)
 
 
