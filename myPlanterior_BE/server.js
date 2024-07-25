@@ -3,7 +3,7 @@ const morgan = require('morgan');
 const session = require('express-session');
 const passport = require('passport');
 require('dotenv').config();
-require('./passport/googleStrategy');
+require('./passport/index')();
 const {sequelize} = require('./models');
 
 // 라우터
@@ -28,8 +28,8 @@ server.use(express.urlencoded({extended : true}));
 server.use(session({
     secret: "myplanterrior",
     resave: false,
-    secure: false,
-    saveUninitialized: false,
+    saveUninitialized: false, // 세션이 새로 생성되면 저장하도록 설정
+    cookie: { secure: false } // 개발 환경에서는 false로 설정 (production 환경에서는 true로 설정)
 }));
 
 server.use(passport.initialize());
@@ -49,6 +49,16 @@ sequelize.sync({force : false})
 
 //server.use("/", naverStoreRouter);
 //server.use('/',kakaoAuthRouter);
+
+server.get('/', (req, res, next) =>{
+    res.send(
+        `<p>google 로그인 </p>
+        <a href='/auth/google'>구글로그인</a>
+        `
+    )
+})
+
+
 server.use('/auth',googleAuthRouter);
 server.use('/send-data', recommendRouter); // 식물 추천 라우터
 
