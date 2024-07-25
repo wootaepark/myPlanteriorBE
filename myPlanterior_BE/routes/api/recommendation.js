@@ -8,10 +8,10 @@ recommendation.post('/', async (req, res, next) =>{
 
     const data = {
         height: 150,
-        scent: 20,
+        scent: 50,
         level: 100,
-        water_need: 10,
-        leaf_shape: 2,
+        water_need: 20,
+        leaf_shape: 1,
         purpose_avg: 30,
         leaf_color_avg: 20
       };
@@ -24,6 +24,7 @@ recommendation.post('/', async (req, res, next) =>{
         if(Object.keys(response.data).length === 0){
             return res.status(404).json({message : "data not found"});
         }
+
         return res.status(200).json(response.data);
       } 
     catch(error){
