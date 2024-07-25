@@ -9,6 +9,7 @@ module.exports = {
       "host": "127.0.0.1",
       // host.docker.internal // in docker
       // svc.sel5.cloudtype.app // in cloudType
+      // 127.0.0.1 // default
       "dialect": "mariadb"
     },
     "test": {

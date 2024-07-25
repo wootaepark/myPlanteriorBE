@@ -13,7 +13,7 @@ recommendation.post('/', async (req, res, next) =>{
         water_need: 20,
         leaf_shape: 1,
         purpose_avg: 30,
-        leaf_color_avg: 20
+        leaf_color_avg: 30
       };
     
     try {

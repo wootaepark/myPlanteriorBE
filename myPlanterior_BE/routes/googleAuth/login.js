@@ -1,66 +1,50 @@
 const express = require('express');
-const axios = require('axios');
-require('dotenv').config;
+const passport = require('passport');
 
-const User = require("../../models/user")
+const router = express.Router();
 
-const googleAuthRouter = express.Router();
+// Google OAuth 인증 요청
+router.get('/google', passport.authenticate('google', {
+  scope: ['profile', 'email']
+}));
 
-googleAuthRouter.get('/', async (req, res, next)=>{
-    const { code } = req.query;
-    console.log(`code: ${code}`);
-    let resp;
+router.get('/google/callback', (req, res, next) => {
+  passport.authenticate('google', (err, user, info) => {
+    if (err) {
+      console.error('Authentication Error:', err); 
+      return res.status(500).json({ message: '서버 오류' });
+    }
+    if (!user) {
+      return res.status(400).json({ message: '인증 오류' });
+    }
 
-    // access_token, refresh_token 등의 구글 토큰 정보 가져오기
-    try{
-        resp = await axios.post(process.env.GOOGLE_TOKEN_URL, {
-        // x-www-form-urlencoded(body)
-        code,
-        client_id : process.env.GOOGLE_CLIENT_ID,
-        client_secret :process.env.GOOGLE_CLIENT_SECRET,
-        redirect_uri: process.env.GOOGLE_REDIRECT_URI,
-        grant_type : 'authorization_code',
+    req.logIn(user, (err) => {
+      if (err) {
+        return res.status(500).json({ message: '로그인 실패' });
+      }
+
+      // 인증 성공 시 클라이언트에 성공 메시지 전송
+      res.status(200).json({ message: '인증 성공', user });
     });
-    //console.log(resp.data);
+  })(req, res, next);
+});
 
-    }
-    catch(error){
-        console.error('Error during save token:', error.response ? error.response.data : error.message);
-        res.status(500).json({ message: 'Internal Server Error', error: error.response ? error.response.data : error.message });
-    } 
-    
-    try{
-        const resp2 = await axios.get(process.env.GOOGLE_USERINFO_URL, {
-        headers: {
-            Authorization: `Bearer ${resp.data.access_token}`,
-            
-        },
-        });
-        console.log(resp2.data);
-        res.send('로그인 성공');
+router.get('/auth/failure', (req, res) => {
+  res.status(400).json({ message: '로그인 취소 또는 오류 발생' });
+});
 
+// 로그아웃
+router.get('/logout', (req, res) => {
+  req.logout();
+  res.status(200).json({ message: '로그아웃 성공' });
+});
 
+// 사용자 프로필 페이지
+router.get('/profile', (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.status(401).json({ message: '인증 필요' });
+  }
+  res.status(200).json({ message: `Hello ${req.user.displayName}`, user: req.user });
+});
 
-        // user DB 저장
-
-        const result = await User.create({
-            name: resp2.data.name,
-            email: resp2.data.email,
-            source: "google"
-        })
-
-
-
-        console.log(result)
-    }
-    catch(error){
-        console.error('Error during get user info:', error.response ? error.response.data : error.message);
-        res.status(500).json({message : 'Internal Server Error', error : error.response ? error.response.data : error.message});
-    }
-        
-})
-
-
-
-
-module.exports = googleAuthRouter;
+module.exports = router;
