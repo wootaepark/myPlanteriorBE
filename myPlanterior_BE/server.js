@@ -4,6 +4,7 @@ const session = require('express-session');
 const passport = require('passport');
 require('dotenv').config();
 require('./passport/googleStrategy');
+require("./passport/kakaoStrategy")
 const {sequelize} = require('./models');
 
 // 라우터
@@ -30,6 +31,7 @@ server.use(session({
     resave: false,
     secure: false,
     saveUninitialized: false,
+    cookie: { secure: false }
 }));
 
 server.use(passport.initialize());
@@ -48,7 +50,7 @@ sequelize.sync({force : false})
 
 
 //server.use("/", naverStoreRouter);
-//server.use('/',kakaoAuthRouter);
+server.use('/',kakaoAuthRouter);
 server.use('/auth',googleAuthRouter);
 server.use('/send-data', recommendRouter); // 식물 추천 라우터
 
