@@ -4,8 +4,9 @@ const session = require('express-session');
 const passport = require('passport');
 require('dotenv').config();
 
-require('./passport/googleStrategy')();
-require("./passport/kakaoStrategy")();
+require("./passport/index")()
+// require('./passport/googleStrategy')();
+// require("./passport/kakaoStrategy")();
 
 const {sequelize} = require('./models');
 
