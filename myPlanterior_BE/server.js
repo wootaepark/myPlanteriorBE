@@ -53,9 +53,9 @@ sequelize.sync({force : false})
 
 //server.use("/", naverStoreRouter);
 
-server.use('/',kakaoAuthRouter);
+server.use('/api/kakao',kakaoAuthRouter);
 
-server.get('/', (req, res, next) =>{
+server.get('/api', (req, res, next) =>{
     res.send(
         `<p>google 로그인 </p>
         <a href='/auth/google'>구글로그인</a>
@@ -65,8 +65,8 @@ server.get('/', (req, res, next) =>{
 
 
 
-server.use('/auth',googleAuthRouter);
-server.use('/send-data', recommendRouter); // 식물 추천 라우터
+server.use('/api/auth',googleAuthRouter);
+server.use('/api/send-data', recommendRouter); // 식물 추천 라우터
 
 
 
