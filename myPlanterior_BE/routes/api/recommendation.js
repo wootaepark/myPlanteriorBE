@@ -17,9 +17,9 @@ recommendation.post('/', async (req, res, next) =>{
       };
     
     try {
-        const response = await axios.post('http://127.0.0.1:8000/cluster', data);
-        // 도커 배포시 아래와 같이 수정필수
-        // const response = await axios.post('http://r-server:8000/cluster', data);\
+        const response = await axios.post('http://r-server:8000/cluster', data);
+        // local : 'http://127.0.0.1:8000/cluster'
+        // production : 'http://r-server:8000/cluster'
         
         if(Object.keys(response.data).length === 0){
             return res.status(404).json({message : "data not found"});

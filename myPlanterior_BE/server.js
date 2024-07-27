@@ -2,6 +2,10 @@ const express = require('express');
 const morgan = require('morgan');
 const session = require('express-session');
 const passport = require('passport');
+const cors = require('cors');
+//const https = require('https');
+//const fs = require('fs');
+
 require('dotenv').config();
 
 require("./passport/index")()
@@ -21,7 +25,7 @@ const recommendRouter = require('./routes/api/recommendation');
 const server = express();
 const port = 3000;
 
-
+server.use(cors());
 server.use(morgan('dev'));
 server.use(express.json());
 server.use(express.urlencoded({extended : true}));
@@ -33,7 +37,7 @@ server.use(session({
     secret: "myplanterrior",
     resave: false,
     saveUninitialized: false, // 세션이 새로 생성되면 저장하도록 설정
-    cookie: { secure: false } // 개발 환경에서는 false로 설정 (production 환경에서는 true로 설정)
+    cookie: { secure: true } // 개발 환경에서는 false로 설정 (production 환경에서는 true로 설정)
 }));
 
 server.use(passport.initialize());
@@ -55,10 +59,10 @@ sequelize.sync({force : false})
 
 server.use('/api/kakao',kakaoAuthRouter);
 
-server.get('/api', (req, res, next) =>{
+server.get('/', (req, res, next) =>{
     res.send(
         `<p>google 로그인 </p>
-        <a href='/auth/google'>구글로그인</a>
+        <a href='api/auth/google'>구글로그인</a>
         `
     )
 })
