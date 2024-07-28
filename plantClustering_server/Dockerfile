@@ -5,7 +5,7 @@ RUN R -e "install.packages(c('dplyr','plumber'), repos='http://cran.rstudio.com/
 
 # Copy the R script and Rdata into the container
 COPY app.R /app/app.R
-COPY data/plantClustering.Rdata /app/data/plantClustering.Rdata
+COPY data/plantRecommend.Rdata /app/data/plantRecommend.Rdata
 
 # Set the working directory
 WORKDIR /app

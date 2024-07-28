@@ -3,43 +3,43 @@ library(dplyr)
 
 # Define the endpoint
 #* @post /cluster
-#* @param height The height of the plant
-#* @param scent The scent level of the plant
-#* @param level The care level of the plant
-#* @param water_need The water requirement of the plant
-#* @param leaf_shape The shape of the leaves
-#* @param purpose_avg The average purpose value
-#* @param leaf_color_avg The average leaf color value
+#* @param input_level The care level of the plant
+#* @param input_water_need The water requirement of the plant
+#* @param input_purpose The average purpose value
+#* @param input_temperature The average temperature value
+#* @param input_sunright The average sunright value
 #* @serializer json
-function(height, scent, level, water_need, leaf_shape, purpose_avg, leaf_color_avg) {
-  load("/app/data/plantClustering.Rdata")  # Absolute path to RData file
+function(input_level, input_water_need, input_purpose, input_temperature, input_sunright) {
+  load("/app/data/plantRecommend.Rdata")  # Absolute path to RData file
   
-  new_point <- data.frame(height = as.numeric(height), 
-                          scent = as.numeric(scent), 
-                          level = as.numeric(level), 
-                          water_need = as.numeric(water_need), 
-                          leaf_shape = as.numeric(leaf_shape), 
-                          purpose_avg = as.numeric(purpose_avg), 
-                          leaf_color_avg = as.numeric(leaf_color_avg))
-  
-  scaled_data <- scale(numeric_data, new_point)
-  mean_data <- attr(scaled_data, "scaled:center")
-  sd_data <- attr(scaled_data, "scaled:scale")
-  scaled_new_point <- scale(new_point, center = mean_data, scale = sd_data)
-  
-  level_match_data <- scaled_data[numeric_data$level == new_point$level, ]
-  
-  if (nrow(level_match_data) == 0) {
-    closest_points <- data.frame()
-  } else {
-    euclidean_distance <- function(a, b) {
-      sqrt(sum((a - b)^2))
-    }
-    distances_to_points <- apply(level_match_data, 1, function(point) euclidean_distance(scaled_new_point, point))
-    closest_points_indices <- order(distances_to_points)[1:9]
-    closest_points <- originData[numeric_data$level == new_point$level, ][closest_points_indices, ]
-    closest_points$scores <- 1 / (distances_to_points[closest_points_indices] + 1e-5)  # Add a small number to avoid division by zero
-  }
-  return(closest_points)
+  # 사용자 입력
+  user_input <- data.frame(
+    level = 100,
+    water_need = 20,
+    purpose = 50,
+    temperature = 50,
+    sunright = 20
+  )
+
+  # 유사도 계산 함수
+  calculate_similarity <- function(data, user_input) {
+  data %>%
+    rowwise() %>%
+    mutate(
+      level_similarity = ifelse(level == user_input$level, 1, 0),
+      water_similarity = ifelse(water_need == user_input$water_need, 1, 0),
+      purpose_similarity = max(ifelse(purpose_1 == user_input$purpose, 1, 0), ifelse(purpose_2 == user_input$purpose, 1, 0)),
+      temperature_similarity = ifelse(temperature == user_input$temperature, 1, 0),
+      sunright_similarity = max(ifelse(sunright_1 == user_input$sunright, 1, 0), ifelse(sunright_2 == user_input$sunright, 1, 0), ifelse(sunright_3 == user_input$sunright, 1, 0)),
+      total_similarity = 6 * level_similarity + 3 * purpose_similarity + 1 * water_similarity + 1 * temperature_similarity + 1 * sunright_similarity,
+      similarity_percentage = (total_similarity / 12) * 100
+    ) %>%
+    arrange(desc(total_similarity), desc(similarity_percentage)) %>%
+    select(content_number, plant_name, similarity_percentage, level, water_need, purpose_1, purpose_2, temperature, sunright_1, sunright_2, sunright_3) %>%
+    head(5)
 }
 
+# 유사도 계산 및 추천 식물 출력
+recommended_plants <- calculate_similarity(cleanedData, user_input)
+return(recommended_plants)
+}
