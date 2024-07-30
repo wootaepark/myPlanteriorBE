@@ -1,8 +1,8 @@
 const express = require('express');
 const passport = require('passport');
-
+const jwt = require('jsonwebtoken');
 const router = express.Router();
-
+const secretKey = process.env.SESSION_SECRET;
 // Google OAuth 인증 요청
 router.get('/google', passport.authenticate('google', {
   scope: ['profile', 'email']
@@ -24,8 +24,9 @@ router.get('/google/callback', (req, res, next) => {
         return res.status(500).json({ message: '로그인 실패' });
       }
 
+      const token = jwt.sign({ id: user.id }, secretKey, { expiresIn: '5' });
       // 인증 성공 시 클라이언트에 성공 메시지 전송
-      res.status(200).json({ message: '인증 성공', user });
+      res.redirect(`https://gyural.github.io/My-Planterior-FE/?token=${token}`)
     });
   })(req, res, next);
 });
