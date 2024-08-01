@@ -54,10 +54,8 @@ sequelize.sync({force : false})
 
 
 
-
-//server.use("/", naverStoreRouter);
-
 server.use('/api/kakao',kakaoAuthRouter);
+server.use('/api/naver',naverStoreRouter);
 
 server.get('/', (req, res, next) =>{
     res.send(

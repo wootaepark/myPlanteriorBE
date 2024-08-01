@@ -31,6 +31,10 @@ class User extends Sequelize.Model{
             collate: 'utf8_general_ci',
         })
     }
+    static associate(db){
+        db.User.hasMany(db.View, {foreignKye : 'user_id'});
+        
+    }
 }
 
 module.exports = User

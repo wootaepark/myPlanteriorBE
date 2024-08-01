@@ -660,7 +660,7 @@ class PlantDetail extends Sequelize.Model{
     static associate(db){
        
         db.PlantDetail.hasMany(db.PlantImage,{foreignKey : 'contentNumber', sourceKey : 'contentNumber'});
-        
+        db.PlantDetail.hasMany(db.View,{foreignKey : 'contentNumber'});
     }
 }
 module.exports = PlantDetail;
