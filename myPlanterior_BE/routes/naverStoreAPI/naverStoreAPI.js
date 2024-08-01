@@ -2,9 +2,15 @@ const express = require("express")
 const router = express.Router()
 const axios = require("axios")
 
+
+
 router.get("/plantList", async(req, res) => {
     try {
-        const keyword = "스킨답서스"
+        const keyword = req.query.keyword;
+
+        if(!keyword){
+            res.status(400).json({error : '쿼리파라미터가 없습니다.'});
+        }
 
         const response = await axios({
             method: "get",
@@ -18,7 +24,7 @@ router.get("/plantList", async(req, res) => {
                 "display": 5
             }
         })
-        res.send(response.data.items)
+        res.status(200).json(response.data.items)
     } catch (error) {
         console.log(error)
     }
