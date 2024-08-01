@@ -64,7 +64,9 @@ recommendation.post('/', async (req, res, next) =>{
 
         const plants = await Promise.all(promises);
 
-        return res.status(200).json({plants, response : response.data.si});
+        const sum = await Plant.sum('selectedCount');
+
+        return res.status(200).json({plants,  selectedCountSum: sum});
 
 
       } 
