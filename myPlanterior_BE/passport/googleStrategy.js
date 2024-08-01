@@ -14,6 +14,8 @@ module.exports = () =>{
       console.log(profile);
       let user = await User.findOne({ where: { user_id: profile.id } });
       if (user) {
+        user.accessToken = accessToken;
+        user.save();
         console.log("find", user);
         return done(null, user);
       }
@@ -22,6 +24,7 @@ module.exports = () =>{
         name: profile.displayName,
         email: profile.emails[0].value,
         source: "google",
+        accessToken: accessToken,
       });
       console.log("create", user);
       return done(null, user);
