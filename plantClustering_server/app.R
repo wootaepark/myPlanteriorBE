@@ -14,11 +14,11 @@ function(input_level, input_water_need, input_purpose, input_temperature, input_
   
   # 사용자 입력
   user_input <- data.frame(
-    level = 100,
-    water_need = 20,
-    purpose = 50,
-    temperature = 50,
-    sunright = 20
+    level = as.numeric(input_level),
+    water_need = as.numeric(input_water_need),
+    purpose = as.numeric(input_purpose),
+    temperature = as.numeric(input_temperature),
+    sunright = as.numeric(input_sunright)
   )
 
   # 유사도 계산 함수
