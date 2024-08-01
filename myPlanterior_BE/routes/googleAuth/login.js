@@ -24,7 +24,7 @@ router.get('/google/callback', (req, res, next) => {
         return res.status(500).json({ message: '로그인 실패' });
       }
 
-      const token = jwt.sign({ id: user.id }, secretKey, { expiresIn: '5' });
+      const token = jwt.sign({ id: user.id }, secretKey, { expiresIn: '1 days' });
       // 인증 성공 시 클라이언트에 성공 메시지 전송
       res.redirect(`https://gyural.github.io/My-Planterior-FE/?token=${token}`)
     });
