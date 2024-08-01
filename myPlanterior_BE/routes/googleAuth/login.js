@@ -26,7 +26,7 @@ router.get('/google/callback', (req, res, next) => {
 
       const token = jwt.sign({ id: user.id }, secretKey, { expiresIn: '1 days' });
       // 인증 성공 시 클라이언트에 성공 메시지 전송
-      res.redirect(`https://gyural.github.io/My-Planterior-FE/?token=${token}`)
+      res.redirect(`localhost:3000?token=${token}`)
     });
   })(req, res, next);
 });
