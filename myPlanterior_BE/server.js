@@ -60,7 +60,7 @@ server.use('/api/naver',naverStoreRouter);
 server.get('/', (req, res, next) =>{
     res.send(
         `<p>google 로그인 </p>
-        <a href='http://localhost:3000/api/auth/google'>구글로그인</a>
+        <a href='https://mpserver.shop/api/auth/google'>구글로그인</a>
         `
     )
 })

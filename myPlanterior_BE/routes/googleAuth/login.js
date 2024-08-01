@@ -34,12 +34,8 @@ router.get('/google/callback', (req, res, next) => {
         if (updatedUser) {
           const token = updatedUser.accessToken; // 저장된 accessToken 가져오기
           // 클라이언트에 accessToken을 포함하여 리다이렉션
-          if(process.env.NODE_ENV == "development"){
             return res.redirect(`http://localhost:3000?token=${token}`);
-          }
-          else{
-            return res.redirect(`https://gyural.github.io/My-Planterior-FE?token=${token}`);
-          }
+          
           
         } else {
           return res.status(404).json({ message: '사용자 정보를 찾을 수 없습니다.' });
