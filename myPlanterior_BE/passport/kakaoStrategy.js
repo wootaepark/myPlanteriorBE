@@ -14,6 +14,8 @@ module.exports = () => {
                 console.log(profile)
                 let user = await User.findOne({ where: { user_id: profile.id } });
             if (user) {
+                user.accessToken = accessToken
+                user.save()
                 return done(null, user);
             }
             user = await User.create({
@@ -21,6 +23,7 @@ module.exports = () => {
                 name: profile.displayName,
                 email: profile._json.kakao_account.email,
                 source: "kakao",
+                accessToken: accessToken
             });
             return done(null, user);
             } catch (error) {
