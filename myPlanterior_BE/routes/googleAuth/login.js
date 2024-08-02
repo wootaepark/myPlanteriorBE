@@ -34,7 +34,7 @@ router.get('/google/callback', (req, res, next) => {
         if (updatedUser) {
           const token = updatedUser.accessToken; // 저장된 accessToken 가져오기
           // 클라이언트에 accessToken을 포함하여 리다이렉션
-            return res.redirect(`http://localhost:3000?token=${token}`);
+            return res.redirect(`https://gyural.github.io/My-Planterior-FE/?token=${token}`);
           
           
         } else {
