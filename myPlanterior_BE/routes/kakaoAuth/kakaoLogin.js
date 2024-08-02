@@ -15,7 +15,7 @@ const passport = require("passport");
 router.get("/oauth/kakao", passport.authenticate("kakao"))
 
 router.get("/oauth/kakao/callback", async(req, res, next) => {
-    passport.authenticate("kakao", (err, user) => {
+    passport.authenticate("kakao", async(err, user) => {
         if (err) {
             console.log(err)
         } 
@@ -23,62 +23,20 @@ router.get("/oauth/kakao/callback", async(req, res, next) => {
             console.log("no user info")
         }
 
-        console.log(user)
-        res.send(user)
+        // 토큰과 함께 응답
+        try {
+            // 사용자 정보를 데이터베이스에서 다시 조회하여 accessToken을 가져옴
+            const updatedUser = await User.findOne({ where: { user_id: user.user_id } });
+            
+            if (updatedUser) {
+            const token = updatedUser.accessToken; // 저장된 accessToken 가져오기
+            // 클라이언트에 accessToken을 포함하여 리다이렉션
+                return res.redirect(`https://gyural.github.io/My-Planterior-FE/?token=${token}`);
+            }
+        } catch (error) {
+            console.log(error)
+        }
     })(req, res, next)
-
-
-    // let token
-    // try {
-    //     console.log("token")
-    //     token = await axios({
-    //         method: "post",
-    //         url: "https://kauth.kakao.com/oauth/token",
-    //         headers: {
-    //             "content-type": "application/x-www-form-urlencoded"
-    //         },
-    //         data:qs.stringify({
-    //             grant_type: "authorization_code",
-    //             client_id: kakao_config.client_id,
-    //             client_secret: kakao_config.client_secret,
-    //             redirect_uri: kakao_config.redirect_uri,
-    //             code: req.query.code
-    //         })
-    //     })
-    //     console.log(token.data)
-    // } catch (error) {
-    //     // console.log(error)
-    // }
-
-    // let user
-    // try {
-    //     console.log("user")
-    //     user = await axios({
-    //         method: "get",
-    //         url: "https://kapi.kakao.com/v2/user/me",
-    //         headers: {
-    //             "Authorization": `Bearer ${token.data.access_token}`,
-    //         },
-    //     })
-
-    //     const userData = user.data.kakao_account
-
-    //     console.log(userData)
-
-        // user DB 저장
-
-
-        // const result = await User.create({
-        //     name: userData.profile.nickname,
-        //     email: userData.email,
-        //     source: "kakao"
-        // });
-
-    //     console.log(result)
-
-    // } catch (error) {
-        // console.log(error)
-    // }
 })
 
 module.exports = router
