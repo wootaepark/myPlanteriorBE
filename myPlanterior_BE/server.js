@@ -59,8 +59,60 @@ server.use('/api/naver',naverStoreRouter);
 
 server.get('/', (req, res, next) =>{
     res.send(
-        `<p>google 로그인 </p>
-        <a href='https://mpserver.shop/api/auth/google'>구글로그인</a>
+        `<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Login</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .login-btn {
+            display: inline-block;
+            background-color: #4285F4;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .login-btn:hover {
+            background-color: #357ae8;
+        }
+        .login-btn img {
+            vertical-align: middle;
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Google로 로그인</h1>
+        <a href="https://mpserver.shop/api/auth/google" class="login-btn">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReH1nivRV_9yG4wz04xIz1EEh-J69U_2JRaA&s" alt="Google logo" width="20" height="20">
+            구글 로그인
+        </a>
+    </div>
+</body>
         `
     )
 })
