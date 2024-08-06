@@ -25,7 +25,7 @@ recommendation.post('/', async (req, res, next) =>{
 
     
     try {
-        const response = await axios.post('http://127.0.0.1:8000/cluster', data);
+        const response = await axios.post('http://r-server:8000/cluster', data);
         // local : 'http://127.0.0.1:8000/cluster' (in vscode) 
         // production : 'http://r-server:8000/cluster' (in docker & production)
 
