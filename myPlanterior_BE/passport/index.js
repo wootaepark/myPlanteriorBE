@@ -21,5 +21,5 @@ module.exports = () => {
    }); 
 
    google(); // 구글 전략 등록
-   kakao();
+   kakao(); // 카카오 전략 등록
 };

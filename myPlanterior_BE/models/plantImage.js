@@ -66,3 +66,4 @@ class PlantImage extends Sequelize.Model{
 
  }
  module.exports = PlantImage;
+ // 식물 이미지 소스 (출처 : 농촌진흥원 , 트리인포 <https://www.treeinfo.net/>)

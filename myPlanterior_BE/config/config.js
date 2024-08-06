@@ -8,7 +8,6 @@ module.exports = {
       "database": "myPlanterior",
       "host": "127.0.0.1",
       // host.docker.internal // in docker
-      // 127.0.0.1 // default
       "dialect": "mariadb"
     },
     "test": {
