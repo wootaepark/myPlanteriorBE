@@ -627,6 +627,11 @@ class PlantDetail extends Sequelize.Model{
                 allowNull : true,
             },
             // 추가배치 장소 
+
+            waterNeed : {
+                type : Sequelize.STRING,
+                allowNull : true,
+            }, // 물 주기 
             selectedCount : {
                 type : Sequelize.INTEGER,
                 defaultValue : 0,
