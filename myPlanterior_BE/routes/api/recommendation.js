@@ -25,7 +25,7 @@ recommendation.post('/', async (req, res, next) =>{
 
     
     try {
-        const response = await axios.post('http://r-server:8000/cluster', data);
+        const response = await axios.post('http://127.0.0.1:8000/cluster', data);
         // local : 'http://127.0.0.1:8000/cluster' (in vscode) 
         // production : 'http://r-server:8000/cluster' (in docker & production)
 
@@ -41,7 +41,7 @@ recommendation.post('/', async (req, res, next) =>{
           const id = item.content_number;
           //console.log(id);
           const plant = await Plant.findOne({ where: {contentNumber : id}, include: PlantImg,
-          attributes : ['contentNumber', 'selectedCount', 'plantName','lighttdemanddoCodeName_1','smellCodeName','grwhTpCodeName','water_need'] });
+          attributes : ['contentNumber', 'selectedCount', 'plantName','lighttdemanddoCodeName_1','smellCodeName','grwhTpCodeName','waterNeed'] });
           if (plant) {
             plant.selectedCount += 1; // 선택되는 식물 count 1 추가
             await plant.save(); // 데이터베이스에 저장
@@ -58,7 +58,7 @@ recommendation.post('/', async (req, res, next) =>{
                 smellCodeName : plant.smellCodeName,
                 similarity_percentage: similarityPercentage,
                 temperature : plant.grwhTpCodeName,
-                water_need : plant.water_need,
+                water_need : plant.waterNeed,
             };
 
 
