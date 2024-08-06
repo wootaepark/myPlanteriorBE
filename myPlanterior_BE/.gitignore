@@ -132,8 +132,7 @@ dist
 .pnp.*
 
 
-/public/image
-/public/music
+
 /uploads
 /migrations
 

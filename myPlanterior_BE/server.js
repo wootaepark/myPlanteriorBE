@@ -3,12 +3,12 @@ const morgan = require('morgan');
 const session = require('express-session');
 const passport = require('passport');
 const cors = require('cors');
-//const https = require('https');
-//const fs = require('fs');
+
 
 require('dotenv').config();
 
 require("./passport/index")()
+// 추후 로그인 기능 개발 시 사용할 코드 
 // require('./passport/googleStrategy')();
 // require("./passport/kakaoStrategy")();
 
@@ -29,15 +29,14 @@ server.use(cors());
 server.use(morgan('dev'));
 server.use(express.json());
 server.use(express.urlencoded({extended : true}));
-// server.use(express.static(path.join(__dirname,'public')));
-// server.use('/img',express.static(path.join(__dirname,'uploads')));
+
 
 
 server.use(session({
     secret: "myplanterrior",
     resave: false,
-    saveUninitialized: false, // 세션이 새로 생성되면 저장하도록 설정
-    cookie: { secure: true } // 개발 환경에서는 false로 설정 (production 환경에서는 true로 설정)
+    saveUninitialized: false, 
+    cookie: { secure: true } 
 }));
 
 server.use(passport.initialize());

@@ -25,3 +25,4 @@ class View extends Sequelize.Model{
 }
 
 module.exports = View;
+// 해당 유저가 과거에 추천 받은 식물 데이터 목록 (추후 개발 예정)

@@ -42,3 +42,4 @@ class User extends Sequelize.Model{
 }
 
 module.exports = User
+// 유저 정보 (google, kakao Oauth 를 이용한 access 토큰 업데이트 및 저장을 위한 테이블, 추후 추가 예정)

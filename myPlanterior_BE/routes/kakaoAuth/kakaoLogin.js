@@ -1,16 +1,9 @@
 require("dotenv").config()
 const express = require("express")
 const router = express.Router()
-const axios = require("axios")
-const qs = require("qs")
 const User = require("../../models/user")
 const passport = require("passport");
 
-// const kakao_config = {
-//     client_id: process.env.KAKAO_REST_API,
-//     client_secret: process.env.KAKAO_CLIENT_SECRET,
-//     redirect_uri: process.env.KAKAO_REDIRECT_URI
-// }
 
 router.get("/oauth/kakao", passport.authenticate("kakao"))
 

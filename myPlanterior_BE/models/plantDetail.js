@@ -669,3 +669,4 @@ class PlantDetail extends Sequelize.Model{
     }
 }
 module.exports = PlantDetail;
+// 식물의 상세 정보 관련 데이터 베이스 구축 (출처 : 농촌진흥원)
